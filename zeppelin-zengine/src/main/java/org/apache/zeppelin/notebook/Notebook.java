@@ -112,7 +112,7 @@ public class Notebook implements NoteEventListener {
     this.interpreterSettingManager = interpreterSettingManager;
     this.jobListenerFactory = jobListenerFactory;
     this.noteSearchService = noteSearchService;
-    this.notebookAuthorization = notebookAuthorization;
+    this.notebookAuthorization = NotebookAuthorization.getInstance();
     this.credentials = credentials;
     quertzSchedFact = new org.quartz.impl.StdSchedulerFactory();
     quartzSched = quertzSchedFact.getScheduler();
@@ -166,7 +166,7 @@ public class Notebook implements NoteEventListener {
       bindInterpretersToNote(subject.getUser(), note.getId(), interpreterIds);
     }
 
-    notebookAuthorization.setNewNotePermissions(note.getId(), subject);
+    getNotebookAuthorization().setNewNotePermissions(note.getId(), subject);
     noteSearchService.addIndexDoc(note);
     note.persist(subject);
     fireNoteCreateEvent(note);
@@ -214,7 +214,7 @@ public class Notebook implements NoteEventListener {
         newNote.addCloneParagraph(p, subject);
       }
 
-      notebookAuthorization.setNewNotePermissions(newNote.getId(), subject);
+      getNotebookAuthorization().setNewNotePermissions(newNote.getId(), subject);
       newNote.persist(subject);
     } catch (IOException e) {
       logger.error(e.toString(), e);
@@ -337,7 +337,7 @@ public class Notebook implements NoteEventListener {
       logger.error(e.toString(), e);
     }
     noteSearchService.deleteIndexDocs(note);
-    notebookAuthorization.removeNote(id);
+    getNotebookAuthorization().removeNote(id);
 
     // remove from all interpreter instance's angular object registry
     for (InterpreterSetting settings : interpreterSettingManager.get()) {
@@ -653,7 +653,8 @@ public class Notebook implements NoteEventListener {
 
   public List<Note> getNotesUnderFolder(String folderId,
       Set<String> userAndRoles) {
-    return folders.getFolder(folderId).getNotesRecursively(userAndRoles, notebookAuthorization);
+    return folders.getFolder(folderId).getNotesRecursively(userAndRoles,
+            getNotebookAuthorization());
   }
 
   public List<Note> getAllNotes() {
@@ -684,10 +685,11 @@ public class Notebook implements NoteEventListener {
     }
 
     synchronized (notes) {
+      final NotebookAuthorization notebookAuth = getNotebookAuthorization();
       return FluentIterable.from(notes.values()).filter(new Predicate<Note>() {
         @Override
         public boolean apply(Note input) {
-          return input != null && notebookAuthorization.isReader(input.getId(), entities);
+          return input != null && notebookAuth.isReader(input.getId(), entities);
         }
       }).toSortedList(new Comparator<Note>() {
         @Override
@@ -1033,7 +1035,8 @@ public class Notebook implements NoteEventListener {
   }
 
   public NotebookAuthorization getNotebookAuthorization() {
-    return notebookAuthorization;
+
+    return NotebookAuthorization.getInstance();
   }
 
   public ZeppelinConfiguration getConf() {

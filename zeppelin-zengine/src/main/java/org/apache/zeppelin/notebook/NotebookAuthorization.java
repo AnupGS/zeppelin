@@ -86,6 +86,12 @@ public class NotebookAuthorization {
       LOG.warn("Notebook authorization module was called without initialization,"
           + " initializing with default configuration");
       init(ZeppelinConfiguration.create());
+    } else {
+      try {
+        loadFromFile();
+      } catch (IOException e) {
+        LOG.error("Error loading NotebookAuthorization", e);
+      }
     }
     return instance;
   }

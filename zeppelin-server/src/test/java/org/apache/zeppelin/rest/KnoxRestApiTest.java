@@ -61,10 +61,10 @@ public class KnoxRestApiTest extends AbstractTestRestApi {
     GetMethod loginWithoutCookie = httpGet("/api/security/ticket");
     Map result = gson.fromJson(loginWithoutCookie.getResponseBodyAsString(), Map.class);
     collector.checkThat("Path is redirected to /login", loginWithoutCookie.getPath(),
-        CoreMatchers.containsString("login"));
+        CoreMatchers.equalTo("login"));
 
     collector.checkThat("Path is redirected to /login", loginWithoutCookie.getPath(),
-        CoreMatchers.containsString("login"));
+        CoreMatchers.equalTo("login"));
 
     collector.checkThat("response contains redirect URL",
         ((Map) result.get("body")).get("redirectURL").toString(), CoreMatchers.equalTo(

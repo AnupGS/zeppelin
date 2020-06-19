@@ -36,7 +36,8 @@ import java.util.Map;
  * Zeppelin configuration.
  *
  */
-public class ZeppelinConfiguration extends XMLConfiguration {
+public class
+ZeppelinConfiguration extends XMLConfiguration {
   private static final String ZEPPELIN_SITE_XML = "zeppelin-site.xml";
   private static final long serialVersionUID = 4749305895693848035L;
   private static final Logger LOG = LoggerFactory.getLogger(ZeppelinConfiguration.class);
@@ -521,6 +522,22 @@ public class ZeppelinConfiguration extends XMLConfiguration {
     return getRelativeDir(ConfVars.ZEPPELIN_CONF_DIR);
   }
 
+  public String getConfDBURL() {
+    return getString(ConfVars.ZEPPELIN_CONFIG_DB_URL);
+  }
+
+  public String getConfDBUsername() {
+    return getString(ConfVars.ZEPPELIN_CONFIG_DB_USERNAME);
+  }
+
+  public String getConfDBPassword() {
+    return getString(ConfVars.ZEPPELIN_CONFIG_DB_PASSWORD);
+  }
+
+  public String getConfDBDriver() {
+    return getString(ConfVars.ZEPPELIN_CONFIG_DB_DRIVER);
+  }
+
   public String getConfigFSDir() {
     String fsConfigDir = getString(ConfVars.ZEPPELIN_CONFIG_FS_DIR);
     if (StringUtils.isBlank(fsConfigDir)) {
@@ -746,6 +763,10 @@ public class ZeppelinConfiguration extends XMLConfiguration {
                 .startsWith("Windows") ? "bin/interpreter.cmd" : "bin/interpreter.sh"),
     // Decide when new note is created, interpreter settings will be binded automatically or not.
     ZEPPELIN_NOTEBOOK_AUTO_INTERPRETER_BINDING("zeppelin.notebook.autoInterpreterBinding", true),
+    ZEPPELIN_CONFIG_DB_URL("zeppelin.config.db.url", ""),
+    ZEPPELIN_CONFIG_DB_USERNAME("zeppelin.config.db.username", ""),
+    ZEPPELIN_CONFIG_DB_PASSWORD("zeppelin.config.db.password", ""),
+    ZEPPELIN_CONFIG_DB_DRIVER("zeppelin.config.db.driver.className", ""),
     ZEPPELIN_CONF_DIR("zeppelin.conf.dir", "conf"),
     ZEPPELIN_CONFIG_FS_DIR("zeppelin.config.fs.dir", ""),
     ZEPPELIN_CONFIG_STORAGE_CLASS("zeppelin.config.storage.class",

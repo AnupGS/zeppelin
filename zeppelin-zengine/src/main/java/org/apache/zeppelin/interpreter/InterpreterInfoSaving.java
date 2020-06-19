@@ -47,7 +47,7 @@ import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 public class InterpreterInfoSaving implements JsonSerializable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(InterpreterInfoSaving.class);
-  private static final Gson gson =  new GsonBuilder().setPrettyPrinting().create();
+  private static final Gson gson =  new Gson();
 
   public Map<String, InterpreterSetting> interpreterSettings = new HashMap<>();
   public Map<String, List<String>> interpreterBindings = new HashMap<>();

@@ -55,7 +55,7 @@
     <module>interpreter-parent</module>
     <module>zeppelin-interpreter</module>
     <module>zeppelin-zengine</module>
-    <module>zeppelin-display</module>
+   <!-- <module>zeppelin-display</module>
     <module>groovy</module>
     <module>spark</module>
     <module>markdown</module>
@@ -78,7 +78,7 @@
     <module>scio</module>
     <module>neo4j</module>
     <module>sap</module>
-    <module>zeppelin-web</module>
+    <module>zeppelin-web</module>-->
     <module>zeppelin-server</module>
     <module>zeppelin-jupyter</module>
     <module>zeppelin-distribution</module>
